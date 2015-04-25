@@ -7,10 +7,49 @@
 
     <link href="//code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
     <script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
+	<style>
+	body {
+  cursor: url('http://ionicframework.com/img/finger.png'), auto;
+}
+.slider {
+  height: 100%;
+}
+.slider-slide {
+  padding-top: 80px;
+  color: #000;
+  background-color: #fff;
+  text-align: center;
+
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 300;
+}
+
+#logo {
+  margin: 30px 0px;
+}
+
+#list {
+  width: 270px;
+  margin: 30px auto;
+  font-size: 20px;
+}
+#list ol {
+  margin-top: 30px;
+}
+#list ol li {
+  text-align: left;
+  list-style: decimal;
+  margin: 10px 0px;
+}
+
+.button.ng-hide{
+  display:none;
+}
+	</style>
 	<script>
 	angular.module('ionicApp', ['ionic'])
-
-.config(function($stateProvider, $urlRouterProvider) {
+	
+	.config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('eventmenu', {
@@ -82,34 +121,141 @@
   
 })
 
-.controller('AttendeesCtrl', function($scope) {
-  
-  $scope.activity = [];
-  $scope.arrivedChange = function(attendee) {
-    var msg = attendee.firstname + ' ' + attendee.lastname;
-    msg += (!attendee.arrived ? ' has arrived, ' : ' just left, '); 
-    msg += new Date().getMilliseconds();
-    $scope.activity.push(msg);
-    if($scope.activity.length > 3) {
-      $scope.activity.splice(0, 1);
-    }
+.config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider
+  .state('intro', {
+    url: '/',
+    templateUrl: 'templates/intro.html',
+    controller: 'IntroCtrl'
+  })
+  .state('event-menu', {
+    url: '/event-menu',
+    templateUrl: 'templates/event-menu.html',
+    controller: 'MainCtrl'
+  });
+
+  $urlRouterProvider.otherwise("/");
+
+})
+
+.controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate) {
+ 
+  // Called to navigate to the event-menu app
+  $scope.startApp = function() {
+    $state.go('event-menu');
   };
+  $scope.next = function() {
+    $ionicSlideBoxDelegate.next();
+  };
+  $scope.previous = function() {
+    $ionicSlideBoxDelegate.previous();
+  };
+
+  // Called each time the slide changes
+  $scope.slideChanged = function(index) {
+    $scope.slideIndex = index;
+  };
+})
+
+.controller('MainCtrl', function($scope, $state) {
+  console.log('MainCtrl');
   
+  $scope.toIntro = function(){
+    $state.go('intro');
+  }
 });
+
+
+
+
+
+
 	</script>
   </head>
 
-  <body ng-controller="MainCtrl">
-  
-  
+  <body ng-controller="MainCtrl" ng-app="ionicApp">
+
+    <ion-nav-bar class="bar-light">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
 
     <ion-nav-view></ion-nav-view>
 
-    <script id="templates/event-menu.html" type="text/ng-template">
+
+    <script id="templates/intro.html" type="text/ng-template"> 
+      <ion-view view-title="Intro">
+        <ion-nav-buttons side="left">
+		<a href="#/event/home" menu-close>
+          <button class="button button-positive button-clear "
+                  ng-click="startApp()" ng-show="!slideIndex"> 
+            Skip Intro
+          </button>
+		  </a>
+          <button class="button button-positive button-clear no-animation"
+                  ng-click="previous()" ng-show="slideIndex > 0">
+            Previous Slide
+          </button>
+		  
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right"> 
+          <button class="button button-positive button-clear no-animation"
+                  ng-click="next()" ng-show="slideIndex != 2">
+            Next
+          </button>
+		  <a href="#/event/home" menu-close>
+          <button class="button button-positive button-clear no-animation"
+                  ng-click="startApp()" ng-show="slideIndex == 2">
+            Start using MyApp
+          </button>
+		  </a>
+        </ion-nav-buttons>
+        <ion-slide-box on-slide-changed="slideChanged(index)">
+          <ion-slide>
+            <h3 style="padding-top:20px;">Thank You<br>For Choosing Us!</h3>
+            <div id="logo">
+              <img style="width:300px;padding-top:20px;padding-bottom:0px;" src="images/logo.png">
+            </div>
+            <p style="padding:15px;">
+              We've worked super hard to make this App one of the best calorie trackers on the market.
+            </p>
+            <p style="padding:5px;">
+              Please follow this intro to make sure you get the most out of the Elite Fitness App.
+            </p>
+          </ion-slide>
+          <ion-slide>
+            <h3 style="padding-top:20px;">Using Awesome</h3>
+            <h5>Just three steps:</h5>
+            <div id="list">
+              <ol>
+                <li style="font-size:15px;">Set Up - Calculate your maintenance caloric intake using our simple calculator</li><br><hr><br>
+                <li style="font-size:15px;">Set Goals - Define weight loss/gain goals and set daily caloric intake </li><br><hr><br>
+                <li style="font-size:15px;">Track Progress - Use our charts to track your progress to a healthier you! </li>
+              </ol>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <h3 style="padding-top:30px;">Share!</h3>
+            <p style="padding:10px;">
+              If you enjoyed this App Share Elite Fitness with your friends through social media!
+            </p>
+          </ion-slide>
+        </ion-slide-box>
+      </ion-view>
+    </script>
+
+
+	
+	
+	 <script id="templates/event-menu.html" type="text/ng-template">
+	 <div class="bar bar-footer bar-light">
+  <div class="title"><img style="width:160px;padding-top:5px;padding-bottom:5px;" src="images/logo.png"></div>
+</div>
       <ion-side-menus enable-menu-with-back-views="false">
 
         <ion-side-menu-content>
-          <ion-nav-bar class="bar-dark">
+          <ion-nav-bar class="bar-light">
             <ion-nav-back-button>
             </ion-nav-back-button>
 
@@ -123,7 +269,7 @@
         </ion-side-menu-content> 
 
         <ion-side-menu side="left">
-          <ion-header-bar class="bar-assertive">
+          <ion-header-bar class="bar-positive">
             <h1 class="title">Menu</h1>
           </ion-header-bar>
           <ion-content>
@@ -192,7 +338,7 @@
 	
 	
 	<script id="templates/home.html" type="text/ng-template">
-      <ion-view view-title="Elite Fitness">
+      <ion-view view-title="Overview">
         <ion-content>
         </ion-content>
       </ion-view>
@@ -218,6 +364,8 @@
         </ion-content>
       </ion-view>
     </script>
-
+	
+	
+    
   </body>
 </html>
