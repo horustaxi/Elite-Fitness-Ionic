@@ -25,7 +25,7 @@
 }
 
 #logo {
-  margin: 30px 0px;
+  margin: 0px;
 }
 
 #list {
@@ -40,6 +40,10 @@
   text-align: left;
   list-style: decimal;
   margin: 10px 0px;
+}
+
+.full-image{
+	padding:0px;
 }
 
 .button.ng-hide{
@@ -70,6 +74,15 @@
       views: {
         'menuContent' :{
           templateUrl: "templates/check-in.html",
+          controller: "CheckinCtrl"
+        }
+      }
+    })
+	.state('eventmenu.calculator', {
+      url: "/calculator",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/calculator.html",
           controller: "CheckinCtrl"
         }
       }
@@ -185,7 +198,7 @@
 
 
     <script id="templates/intro.html" type="text/ng-template"> 
-      <ion-view view-title="Intro">
+      <ion-view view-title="">
         <ion-nav-buttons side="left">
 		<a href="#/event/home" menu-close>
           <button class="button button-positive button-clear "
@@ -207,7 +220,7 @@
 		  <a href="#/event/home" menu-close>
           <button class="button button-positive button-clear no-animation"
                   ng-click="startApp()" ng-show="slideIndex == 2">
-            Start using MyApp
+            Begin >
           </button>
 		  </a>
         </ion-nav-buttons>
@@ -229,17 +242,20 @@
             <h5>Just three steps:</h5>
             <div id="list">
               <ol>
-                <li style="font-size:15px;">Set Up - Calculate your maintenance caloric intake using our simple calculator</li><br><hr><br>
-                <li style="font-size:15px;">Set Goals - Define weight loss/gain goals and set daily caloric intake </li><br><hr><br>
-                <li style="font-size:15px;">Track Progress - Use our charts to track your progress to a healthier you! </li>
+                <li style="font-size:15px;"><div style="color:#3299CC;font-size:17px; ">Set Up-</div>Calculate your maintenance caloric intake using our simple calculator</li><br><hr><br>
+                <li style="font-size:15px;"><div style="color:#3299CC; font-size:17px;">Set Goals-</div>Define weight loss/gain goals and set daily caloric intake </li><br><hr><br>
+                <li style="font-size:15px;"><div style="color:#3299CC; font-size:17px;">Track Progress-</div>Use our charts to track your progress to a healthier you! </li>
               </ol>
             </div>
           </ion-slide>
           <ion-slide>
-            <h3 style="padding-top:30px;">Share!</h3>
-            <p style="padding:10px;">
-              If you enjoyed this App Share Elite Fitness with your friends through social media!
+            <h3 style="padding-top:130px;">Share & Rate!</h3>
+            <p style="padding:10px;padding-bottom:70px">
+              If you liked this App Please Rate and Share Elite Fitness with your friends!
             </p>
+			<a href="#/event/home" menu-close>
+			<button class="button icon-right ion-chevron-right button-positive"> Begin   </button>
+			</a>
           </ion-slide>
         </ion-slide-box>
       </ion-view>
@@ -280,7 +296,7 @@
 			  <a href="#/event/check-in" class="item" menu-close>Current Progress</a>
               <a href="#/event/check-in" class="item" menu-close>Caloric Intake</a>
               <a href="#/event/attendees" class="item" menu-close>Caloric Defacit</a>
-			  <a href="#/event/attendees" class="item" menu-close>Settings</a>
+			  <a href="#/event/calculator" class="item" menu-close>Settings</a>
             </ul>
           </ion-content>
         </ion-side-menu>
@@ -292,6 +308,69 @@
       <ion-view view-title="Elite Fitness">
         <ion-content class="padding">
           //CONTENTS GOES RIGHT HERE
+        </ion-content>
+      </ion-view>
+    </script>
+	
+	<script id="templates/calculator.html" type="text/ng-template">
+      <ion-view view-title="Maintenance Calculator">
+        <ion-content class="padding" style="font-size:20px;">
+		
+          <ul class="list">
+		  <li class="item item-toggle">
+			 <div >Female</div>
+			 <label class="toggle toggle-positive" style="margin-left: auto;
+    margin-right: auto;
+    width: 55%;">
+			   <input type="checkbox"/>
+			   <div class="track" >
+				 <div class="handle"></div>
+			   </div>
+			   <div style="float:right;font-size:20px;">Male</div>
+			 </label>
+			 
+		  </li>
+		  <li>
+		  <label class="item item-input">
+		  <span class="input-label">Age </span>
+		  <input type="tel">
+		  </label>
+		  </li>
+		  
+		  <li>
+		  <label class="item item-input">
+		  <span class="input-label">Height (Cm)</span>
+		  <input type="tel">
+		  </label>
+		  </li>
+		
+		
+		<li>
+		  <label class="item item-input">
+		  <span class="input-label">Weight (Kg)</span>
+		  <input type="tel">
+		  </label>
+		  </li>
+		  
+		  <li>
+		   <label class="item item-input item-select">
+			<div class="input-label">
+			  Activity
+			</div>
+			<select>
+			  <option>Little or no excercise</option>
+			  <option selected>Excercise 1-3 times/wk</option>
+			  <option>Excercise 3-5 times/wk</option>
+			  <option>Excercise 6-7 times/wk</option>
+			  <option>+ Excercise/physical job</option>
+			</select>
+		  </label>
+		  </li>
+		</ul>
+		<div style="margin-left: auto;
+    margin-right: auto;
+    width: 60%;padding-top:20px;"><a ><img style="width:200px;"src="images/go.png "></a></div>
+		
         </ion-content>
       </ion-view>
     </script>
@@ -338,7 +417,22 @@
 	
 	
 	<script id="templates/home.html" type="text/ng-template">
-      <ion-view view-title="Overview">
+      <ion-view view-title="Overview" >
+	  <ion-content style="background-color:#1A7AB2;">
+		<a href="#/event/calculator" menu-close><div class="item item-body">
+		<img class="full-image" src="images/maintain.jpg">
+		</div></a>
+		<div class="item item-body">
+		<img class="full-image" src="images/target.jpg">
+		</div>
+		<div class="item item-body">
+		<img class="full-image" src="images/remain.jpg">
+		</div>
+		<div class="item item-body">
+		<img class="full-image" src="images/progress.jpg">
+		</div>
+	  
+  
         <ion-content>
         </ion-content>
       </ion-view>
