@@ -3,11 +3,13 @@ angular.module('ionicApp', ['ionic'])
 	.config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
+
     .state('eventmenu', {
       url: "/event",
       abstract: true,
       templateUrl: "templates/event-menu.html"
     })
+
     .state('eventmenu.home', {
       url: "/home",
       views: {
@@ -44,15 +46,13 @@ angular.module('ionicApp', ['ionic'])
         }
       }
     })
-  
-
-  $stateProvider
 
   .state('intro', {
     url: '/',
     templateUrl: 'templates/intro.html',
     controller: 'IntroCtrl'
   })
+
   .state('event-menu', {
     url: '/event-menu',
     templateUrl: 'templates/event-menu.html',
@@ -60,6 +60,26 @@ angular.module('ionicApp', ['ionic'])
   });
 
   $urlRouterProvider.otherwise("/");
+})
+
+.controller('CheckinCtrl', function($scope) {
+  $scope.showForm = true;
+  
+  $scope.shirtSizes = [
+    { text: 'Large', value: 'L' },
+    { text: 'Medium', value: 'M' },
+    { text: 'Small', value: 'S' }
+  ];
+  
+  $scope.attendee = {};
+  $scope.submit = function() {
+    if(!$scope.attendee.firstname) {
+      alert('Info required');
+      return;
+    }
+    $scope.showForm = false;
+    $scope.attendees.push($scope.attendee);
+  };
 })
 
 .controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate) {
@@ -86,6 +106,11 @@ angular.module('ionicApp', ['ionic'])
     $state.go('intro');
   }
 });
+
+
+
+
+
 
 
 

@@ -1,15 +1,24 @@
+<!doctype html>
 <html ng-app="ionicApp">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-
     <title>Elite Fitness</title>
 
+    <!-- Ionic Libs -->
+    <link rel="stylesheet" href="lib/ionic/css/ionic.css">
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    
+    <!-- My App -->
+    <link href="style/main.css" rel="stylesheet">
+    <script src="scripts/main.js"></script>
+    <script src="js/app.js"></script>
+    <!--
+    <script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
+    <script src="scripts/main.js"></script>
     <link href="//code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
   	<link href="style/main.css" rel="stylesheet">
-    <script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
-  	<script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
-  	<script src="scripts/main.js"></script>
+    -->
   </head>
 
   <body ng-controller="MainCtrl" ng-app="ionicApp">
@@ -229,16 +238,16 @@
       <ion-view view-title="Overview" >
       	  <ion-content style="background-color:#1A7AB2;">
         		<a href="#/event/calculator" menu-close><div class="item item-body">
-        		<img class="full-image" src="images/maintain.jpg">
+        	   	<img class="full-image" src="images/maintain.jpg">
         		</div></a>
         		<div class="item item-body">
-        		<img class="full-image" src="images/target.jpg">
+        		  <img class="full-image" src="images/target.jpg">
         		</div>
         		<div class="item item-body">
-        		<img class="full-image" src="images/remain.jpg">
+        		  <img class="full-image" src="images/remain.jpg">
         		</div>
         		<div class="item item-body">
-        		<img class="full-image" src="images/progress.jpg">
+        		  <img class="full-image" src="images/progress.jpg">
         		</div>
           </ion-content>
       </ion-view>
