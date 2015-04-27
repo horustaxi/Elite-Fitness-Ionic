@@ -44,56 +44,10 @@ angular.module('ionicApp', ['ionic'])
         }
       }
     })
-    .state('eventmenu.attendees', {
-      url: "/attendees",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/attendees.html",
-          controller: "AttendeesCtrl"
-        }
-      }
-    })
   
-  $urlRouterProvider.otherwise("/event/home");
-})
-
-.controller('MainCtrl', function($scope, $ionicSideMenuDelegate) {
-  $scope.attendees = [
-    { firstname: 'Nicolas', lastname: 'Cage' },
-    { firstname: 'Jean-Claude', lastname: 'Van Damme' },
-    { firstname: 'Keanu', lastname: 'Reeves' },
-    { firstname: 'Steven', lastname: 'Seagal' }
-  ];
-  
-  $scope.toggleLeft = function() {
-    $ionicSideMenuDelegate.toggleLeft();
-  };
-})
-
-.controller('CheckinCtrl', function($scope) {
-  $scope.showForm = true;
-  
-  $scope.shirtSizes = [
-    { text: 'Large', value: 'L' },
-    { text: 'Medium', value: 'M' },
-    { text: 'Small', value: 'S' }
-  ];
-  
-  $scope.attendee = {};
-  $scope.submit = function() {
-    if(!$scope.attendee.firstname) {
-      alert('Info required');
-      return;
-    }
-    $scope.showForm = false;
-    $scope.attendees.push($scope.attendee);
-  };
-  
-})
-
-.config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
+
   .state('intro', {
     url: '/',
     templateUrl: 'templates/intro.html',
@@ -106,7 +60,6 @@ angular.module('ionicApp', ['ionic'])
   });
 
   $urlRouterProvider.otherwise("/");
-
 })
 
 .controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate) {
@@ -129,8 +82,6 @@ angular.module('ionicApp', ['ionic'])
 })
 
 .controller('MainCtrl', function($scope, $state) {
-  console.log('MainCtrl');
-  
   $scope.toIntro = function(){
     $state.go('intro');
   }
