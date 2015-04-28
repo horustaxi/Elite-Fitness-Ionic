@@ -1,7 +1,12 @@
 
 
 $count = 0;
-$isMale = false
+
+window.localStorage['isMale'] = false;
+window.localStorage['exc'] = 2;
+
+$isMale=false;
+$exc = 2;
 
 angular.module('ionicApp', ['ionic'])
 	
@@ -96,12 +101,12 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
         $window.localStorage.setItem('ni_toggle', $scope.ni_toggle);
         $count++;
         if($count %= 2){
-          $ísMale = true;
+          window.localStorage['isMale'] = true;
           
-          console.log($ísMale);
+     
         }else{
-          $ísMale = false;
-          console.log($ísMale);
+          window.localStorage['isMale'] = false;
+     
         }
     };
 
@@ -121,47 +126,53 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
     $scope.$on("$ionicView.beforeEnter", function(){
 
   });
-    $BMR = 0;
     $weight = weight.value;
     $height = height.value;
     $gender = gender.value;
     $age = age.value;
     $exc = exc.value;
+    
     //window.alert($gender);
 
-    console.log($ísMale);
+    var isMale = window.localStorage['isMale'];
 
 
-    
+    console.log(isMale);
+    console.log($exc);
 
-    if($isMale === true){
-      $BMR = 10 * $weight + 6.25 * $height - 5 * $age - 161;
+
+    $BMR = 10 * $weight + 6.25 * $height - 5 * $age;
+
+    if(isMale === 'false'){
+      $BMR -= 161;
     }
-    if($isMale === false){
-      $BMR = 10 * $weight + 6.25 * $height - 5 * $age + 5;
+    if(isMale === 'true'){
+      $BMR += 5;
     }
+
+    $maintenanceWeight = $BMR;
 
     switch($exc){
-      case 1:
-        $BMR *= 1.2;
+      case '1':
+        $maintenanceWeight *= 1.2;
         break;
-      case 2:
-        $BMR *= 1.375;
+      case '2':
+        $maintenanceWeight *= 1.375;
         break;
-      case 3:
-        $BMR *= 1.55;
+      case '3':
+        $maintenanceWeight *= 1.55;
         break;
-      case 4:
-        $BMR *= 1.725;
+      case '4':
+        $maintenanceWeight *= 1.725;
         break;
-      case 5:
-        $BMR *= 1.9;
+      case '5':
+        $maintenanceWeight *= 1.9;
         break;
     }
-
     //window.alert($BMR);
     $scope.modal.show();
-    document.getElementById('span1').innerHTML = 'Your current BMR is: ' + $BMR;
+    document.getElementById('span1').innerHTML = 'Your current BMR is: ' + Math.round($BMR) +" Calories/day "
+    + "<br /> You need "+ Math.round($maintenanceWeight)+" Calories/day to maintain your weight.";
   }
   $scope.closeModal = function(){
     $scope.modal.hide();
