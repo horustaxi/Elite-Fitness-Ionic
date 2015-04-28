@@ -1,3 +1,8 @@
+
+
+$count = 0;
+$isMale = false
+
 angular.module('ionicApp', ['ionic'])
 	
 	.config(function($stateProvider, $urlRouterProvider) {
@@ -42,7 +47,7 @@ angular.module('ionicApp', ['ionic'])
       views: {
         'menuContent' :{
           templateUrl: "templates/calculator.html",
-          controller: "CheckinCtrl"
+          controller: "CheckinCtrl1"
         }
       }
     })
@@ -62,7 +67,7 @@ angular.module('ionicApp', ['ionic'])
   $urlRouterProvider.otherwise("/");
 })
 
-.controller('CheckinCtrl', function($scope) {
+.controller('CheckinCtrl', function($scope, $ionicModal) {
   $scope.showForm = true;
   
   $scope.shirtSizes = [
@@ -80,6 +85,87 @@ angular.module('ionicApp', ['ionic'])
     $scope.showForm = false;
     $scope.attendees.push($scope.attendee);
   };
+})
+
+
+
+.controller('CheckinCtrl1', function($scope, $ionicModal,$window) {
+
+$scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
+    $scope.updateLocalStorage = function() {
+        $window.localStorage.setItem('ni_toggle', $scope.ni_toggle);
+        $count++;
+        if($count %= 2){
+          $ísMale = true;
+          
+          console.log($ísMale);
+        }else{
+          $ísMale = false;
+          console.log($ísMale);
+        }
+    };
+
+    
+  
+
+
+  $ionicModal.fromTemplateUrl('templates/mylongform.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+
+  $scope.openModal = function(){
+
+    $scope.$on("$ionicView.beforeEnter", function(){
+
+  });
+    $BMR = 0;
+    $weight = weight.value;
+    $height = height.value;
+    $gender = gender.value;
+    $age = age.value;
+    $exc = exc.value;
+    //window.alert($gender);
+
+    console.log($ísMale);
+
+
+    
+
+    if($isMale === true){
+      $BMR = 10 * $weight + 6.25 * $height - 5 * $age - 161;
+    }
+    if($isMale === false){
+      $BMR = 10 * $weight + 6.25 * $height - 5 * $age + 5;
+    }
+
+    switch($exc){
+      case 1:
+        $BMR *= 1.2;
+        break;
+      case 2:
+        $BMR *= 1.375;
+        break;
+      case 3:
+        $BMR *= 1.55;
+        break;
+      case 4:
+        $BMR *= 1.725;
+        break;
+      case 5:
+        $BMR *= 1.9;
+        break;
+    }
+
+    //window.alert($BMR);
+    $scope.modal.show();
+    document.getElementById('span1').innerHTML = 'Your current BMR is: ' + $BMR;
+  }
+  $scope.closeModal = function(){
+    $scope.modal.hide();
+  }
 })
 
 .controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate) {
@@ -106,13 +192,4 @@ angular.module('ionicApp', ['ionic'])
     $state.go('intro');
   }
 });
-
-
-
-
-
-
-
-
-
 
