@@ -32,7 +32,7 @@
 
 	<!-- INTRODUCTION TEMPLATE -->
     <script id="templates/intro.html" type="text/ng-template"> 
-      <ion-view view-title="intro">
+      <ion-view view-title="">
         <ion-nav-buttons side="left">
 	       	<a href="#/event/home" menu-close>
           <button class="button button-positive button-clear "
@@ -103,13 +103,13 @@
               <a class="button" ng-click="closeModal()">OK</a>
               <h1 class="title">Results</h1>
             </ion-header-bar>
-            <ion-content has-bouncing="true">
-            <h1>Calculate Basal Metabolic Rate (BMR) online (Harris Benedict Equation)</h1>
+            <ion-content has-bouncing="true" style="padding:30px;">
+            <h3><span id="span1" style="color:#1A7AB2"></span></h3>
 
-            <p>
-            Your Basal Metabolic Rate (BMR is the amount of calories you would burn if you were asleep all day. The Harris Benedict Equation determines your total daily energy expenditure (calories).
-              <h3><span id="span1" style="color:#1A7AB2"></span><h3>
-            </p>
+            <h4><br><br>
+            Your Basal Metabolic Rate (BMR) is the amount of calories you would burn if you were asleep all day. The Harris Benedict Equation determines your total daily energy expenditure (calories).
+              
+            </h4>
             </ion-content>
           </form>
         </ion-modal-view>
@@ -145,7 +145,7 @@
               <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
 			  <a href="#/event/home" class="item" menu-close>Overview</a>
 			  <a href="#/event/calculator" class="item" menu-close>Calculator</a>
-			  <a href="#/event/check-in" class="item" menu-close>Current Progress</a>
+			  <a href="#/event/check-in" class="item" menu-close>Targets</a>
               <a href="#/event/test" class="item" menu-close>Caloric Intake</a>
             </ul>
           </ion-content>
@@ -237,17 +237,27 @@
 
 	<!--REFERENCE TEMPLATE -->
     <script id="templates/check-in.html" type="text/ng-template">
-      <ion-view view-title="Event Check-in">
+      <ion-view view-title="Targets">
         <ion-content>
-			  <div class="list list-inset">
-				  <label class="item item-input">
-					  <input type="text" placeholder="Username" ng-model="data.username">
-				  </label>
-				  <label class="item item-input">
-					  <input type="password" placeholder="Password" ng-model="data.password">
-				  </label>
+        <div class="row">
+        <div class="col">
+          <button class="button button-full button-balanced">
+            Gain 1kg per week
+          </button>
+          <button class="button button-full button-balanced">
+            Gain 0.5kg per week
+          </button>
+          <button class="button button-full button-positive">
+            Maintain Current Weight
+          </button>
+          <button class="button button-full button-assertive">
+            Loose 0.5kg per week
+          </button>
+          <button class="button button-full button-assertive">
+            Loose 1kg per week
+          </button>
 			  </div>
-			  <button class="button button-block button-calm" ng-click="login()">Login</button>
+        </div>
         </ion-content>
       </ion-view>
     </script>
@@ -255,20 +265,34 @@
 	<!--OVERVIEW TEMPLATE -->
 	<script id="templates/home.html" type="text/ng-template">
       <ion-view view-title="Overview" >
-      	  <ion-content style="background-color:#1A7AB2;">
+      	  <ion-content >
+
         		<a href="#/event/calculator" menu-close><div class="item item-body">
         	   	<img class="full-image" src="images/maintain.jpg">
+              <span style="" id="Maintain"></span>
         		</div></a>
+
+            <a href="#/event/check-in" menu-close>
         		<div class="item item-body">
         		  <img class="full-image" src="images/target.jpg">
-        		</div>
+        		</div></a>
+
         		<div class="item item-body">
         		  <img class="full-image" src="images/remain.jpg">
         		</div>
+
         		<div class="item item-body">
         		  <img class="full-image" src="images/progress.jpg">
         		</div>
-          </ion-content>
+
+            <div class="item item-body">
+              <img class="full-image" src="images/progress.jpg">
+            </div>
+
+            <div class="item item-body" style="margin-bottom:40px;">
+              <img class="full-image" src="images/progress.jpg">
+            </div>
+          </ion-content >
       </ion-view>
     </script>
     

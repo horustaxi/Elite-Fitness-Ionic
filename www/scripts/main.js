@@ -1,12 +1,9 @@
-
-
 $count = 0;
+$isMale=false;
+$exc = 2;
 
 window.localStorage['isMale'] = false;
 window.localStorage['exc'] = 2;
-
-$isMale=false;
-$exc = 2;
 
 angular.module('ionicApp', ['ionic'])
 	
@@ -92,8 +89,6 @@ angular.module('ionicApp', ['ionic'])
   };
 })
 
-
-
 .controller('CheckinCtrl1', function($scope, $ionicModal,$window) {
 
 $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
@@ -101,17 +96,11 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
         $window.localStorage.setItem('ni_toggle', $scope.ni_toggle);
         $count++;
         if($count %= 2){
-          window.localStorage['isMale'] = true;
-          
-     
+          window.localStorage['isMale'] = true;    
         }else{
           window.localStorage['isMale'] = false;
-     
         }
     };
-
-    
-  
 
 
   $ionicModal.fromTemplateUrl('templates/mylongform.html', {
@@ -135,7 +124,6 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
     //window.alert($gender);
 
     var isMale = window.localStorage['isMale'];
-
 
     console.log(isMale);
     console.log($exc);
@@ -171,8 +159,11 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
     }
     //window.alert($BMR);
     $scope.modal.show();
-    document.getElementById('span1').innerHTML = 'Your current BMR is: ' + Math.round($BMR) +" Calories/day "
-    + "<br /> You need "+ Math.round($maintenanceWeight)+" Calories/day to maintain your weight.";
+    document.getElementById('span1').innerHTML = 'Your BMR is <b>' + Math.round($BMR) +"</b> Cals/day "
+    + "<br /> You need <b>"+ Math.round($maintenanceWeight)+"</b> Cal/day to maintain your weight.";
+    window.localStorage['storedMaintenance'] = Math.round($maintenanceWeight);
+
+    document.getElementById('Maintain').innerHTML = window.localStorage['storedMaintenance']+" Cal/day";
   }
   $scope.closeModal = function(){
     $scope.modal.hide();
