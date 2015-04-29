@@ -103,13 +103,18 @@
               <a class="button" ng-click="closeModal()">OK</a>
               <h1 class="title">Results</h1>
             </ion-header-bar>
-            <ion-content has-bouncing="true" style="padding:30px;">
+            <ion-content has-bouncing="true" style="padding:30px;text-align:center;">
             <h3><span id="span1" style="color:#1A7AB2"></span></h3>
 
             <h4><br><br>
             Your Basal Metabolic Rate (BMR) is the amount of calories you would burn if you were asleep all day. The Harris Benedict Equation determines your total daily energy expenditure (calories).
               
             </h4>
+            <br/>
+            <a style="text-decoration: none;border:0px;" href="#/event/home" class="item" menu-close><button ng-click="closeModal()" class="button button-full button-positive">
+            Save Maintenance
+            </button></a>
+
             </ion-content>
           </form>
         </ion-modal-view>
@@ -120,7 +125,7 @@
 	 <div class="bar bar-footer bar-light">
   <div class="title"><img style="width:160px;padding-top:5px;padding-bottom:5px;" src="images/logo.png"></div>
 </div>
-      <ion-side-menus enable-menu-with-back-views="false">
+      <ion-side-menus enable-menu-with-back-views="true">
 
         <ion-side-menu-content>
           <ion-nav-bar class="bar-light">
@@ -143,7 +148,7 @@
           <ion-content>
             <ul class="list">
               <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
-			  <a href="#/event/home" class="item" menu-close>Overview</a>
+			  <a href="#/event/home" class="item" menu-close>Home</a>
 			  <a href="#/event/calculator" class="item" menu-close>Calculator</a>
 			  <a href="#/event/check-in" class="item" menu-close>Targets</a>
               <a href="#/event/test" class="item" menu-close>Caloric Intake</a>
@@ -154,16 +159,12 @@
       </ion-side-menus>
     </script>
 
-	<!--TEST TEMPLATE -->
-
+	<!--CONSUMED TEMPLATE -->
     <script id="templates/test.html" type="text/ng-template">
-      <ion-view view-title="Elite Fitness">
-        <ion-content class="padding">
-        <button class="button button-dark" ng-click="openModal()">Sample Alert</button>
-
-		<script id="popup-template.html" type="text/ng-template">
-		  <input ng-model="data.wifi" type="text" placeholder="Password">
-		</script>
+      <ion-view view-title="Calories Consumed">
+        <ion-content class="padding">          
+              <input type="text" placeholder="Calories Consumed" style="float:left;padding-left:20%">
+              <button class="button button-light icon ion-plus-circled"></button>
         </ion-content>
       </ion-view>
     </script>
@@ -227,34 +228,64 @@
       <input type="tel" ng-model="input.height" id="height">
       </label>
       </li>
+      <h6 style="color:red;text-align:center;padding-left:20px;padding-right:20px;">NOTE:<br />If Used < Back Button You Must Save Current Calculation Or Your Maintenance Caloric Intake Will Be RESET!</h6>
 		</ul>
-		<div style="margin-left: auto; margin-right: auto; width: 60%;padding-top:20px;">
+
+		<div style="margin-left: auto; margin-right: auto; width: 60%;padding-top:0px;">
 		<a on-touch="onTouch()" ng-click="openModal()"><img style="width:200px;"src="images/go.png "></a></div>
 		<form>
         </ion-content>
       </ion-view>
     </script>
 
-	<!--REFERENCE TEMPLATE -->
+    <script id="popup-template.html" type="text/ng-template">
+      <input ng-model="data.num" type="tel" placeholder="Gain/Loss">
+    </script>
+
+	<!--TARGETS TEMPLATE -->
     <script id="templates/check-in.html" type="text/ng-template">
       <ion-view view-title="Targets">
         <ion-content>
         <div class="row">
-        <div class="col">
-          <button class="button button-full button-balanced">
+        <div class="col" ng-controller="MainCtrl">
+          <button class="button button-full button-balanced" ng-click="showConfirm()">
+            Gain 2kg per week
+          </button>
+
+          <button class="button button-full button-balanced" ng-click="showGain15()">
+            Gain 1.5kg per week
+          </button>
+
+          <button class="button button-full button-balanced" ng-click="showGain1()">
             Gain 1kg per week
           </button>
-          <button class="button button-full button-balanced">
+
+          <button class="button button-full button-balanced" ng-click="showGain05()">
             Gain 0.5kg per week
           </button>
-          <button class="button button-full button-positive">
+
+          <button class="button button-full button-positive" ng-click="showMaintain()">
             Maintain Current Weight
           </button>
-          <button class="button button-full button-assertive">
+
+          <button class="button button-full button-assertive" ng-click="showLoss05()">
             Loose 0.5kg per week
           </button>
-          <button class="button button-full button-assertive">
+
+          <button class="button button-full button-assertive" ng-click="showLoss1()">
             Loose 1kg per week
+          </button>
+
+          <button class="button button-full button-assertive" ng-click="showLoss15()">
+            Loose 1.5kg per week
+          </button>
+
+          <button class="button button-full button-assertive" ng-click="showLoss2()">
+            Loose 2kg per week
+          </button>
+
+          <button class="button button-full button-dark" ng-click="showPopup()">
+            Gain/Loose Custom amount per week
           </button>
 			  </div>
         </div>
@@ -268,26 +299,26 @@
       	  <ion-content >
 
         		<a href="#/event/calculator" menu-close><div class="item item-body">
+              <span style="position:absolute;padding-top:75px;padding-left:130px;color:#3299CC" id="Maintain">0</span>
         	   	<img class="full-image" src="images/maintain.jpg">
-              <span style="" id="Maintain"></span>
         		</div></a>
 
-            <a href="#/event/check-in" menu-close>
-        		<div class="item item-body">
+            <a href="#/event/check-in" menu-close><div class="item item-body">
+            <span style="position:absolute;padding-top:75px;padding-left:130px;color:#3299CC" id="Target">0</span>
+        		
         		  <img class="full-image" src="images/target.jpg">
         		</div></a>
 
-        		<div class="item item-body">
-        		  <img class="full-image" src="images/remain.jpg">
-        		</div>
-
-        		<div class="item item-body">
-        		  <img class="full-image" src="images/progress.jpg">
-        		</div>
-
+            <a href="#/event/test" menu-close>
             <div class="item item-body">
-              <img class="full-image" src="images/progress.jpg">
-            </div>
+            <span style="position:absolute;padding-top:75px;padding-left:130px;color:#3299CC" id="Consumed">0</span>
+              <img class="full-image" src="images/consumed.jpg">
+            </div></a>
+
+        		<div class="item item-body">
+            <span style="position:absolute;padding-top:75px;padding-left:130px;color:#3299CC" id="Remaining">0</span>
+        		  <img class="full-image" src="images/remain.jpg">
+        		</div>       		
 
             <div class="item item-body" style="margin-bottom:40px;">
               <img class="full-image" src="images/progress.jpg">

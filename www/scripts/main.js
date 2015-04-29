@@ -1,9 +1,4 @@
-$count = 0;
-$isMale=false;
-$exc = 2;
 
-window.localStorage['isMale'] = false;
-window.localStorage['exc'] = 2;
 
 angular.module('ionicApp', ['ionic'])
 	
@@ -89,6 +84,8 @@ angular.module('ionicApp', ['ionic'])
   };
 })
 
+
+
 .controller('CheckinCtrl1', function($scope, $ionicModal,$window) {
 
 $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
@@ -161,14 +158,17 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
     $scope.modal.show();
     document.getElementById('span1').innerHTML = 'Your BMR is <b>' + Math.round($BMR) +"</b> Cals/day "
     + "<br /> You need <b>"+ Math.round($maintenanceWeight)+"</b> Cal/day to maintain your weight.";
-    window.localStorage['storedMaintenance'] = Math.round($maintenanceWeight);
+    
 
     document.getElementById('Maintain').innerHTML = window.localStorage['storedMaintenance']+" Cal/day";
   }
   $scope.closeModal = function(){
+    window.localStorage['storedMaintenance'] = Math.round($maintenanceWeight);
     $scope.modal.hide();
   }
 })
+
+
 
 .controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate) {
  
@@ -189,9 +189,247 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
   };
 })
 
-.controller('MainCtrl', function($scope, $state) {
+
+
+.controller('MainCtrl',function($scope, $ionicPopup, $timeout, $state) {
+
   $scope.toIntro = function(){
     $state.go('intro');
   }
+
+ // Triggered on a button click, or some other target
+ $scope.showPopup = function() {
+   $scope.data = {}
+
+   // An elaborate, custom popup
+   var myPopup = $ionicPopup.show({
+     template: '<input type="tel" ng-model="data.num">',
+     title: 'Enter Gain/Loss Amount',
+     subTitle: 'Please use decimals & integers only',
+     scope: $scope,
+     buttons: [
+       { text: 'Exit' ,type: 'button-light'},
+       { text: 'Loss',type: 'button-assertive',onTap: function(e) {
+           if (!$scope.data.num) {
+             //don't allow the user to close unless he enters 
+             e.preventDefault();
+           } else {
+             $gains = window.localStorage['storedMaintenance'];
+             var gains = $gains + ((data.num.value * -3500) / 7);
+             window.localStorage['targetCals'] = gains;
+             document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+             return gains;
+           }
+         }
+        },
+
+       {
+         text: '<b>Gain</b>',
+         type: 'button-balanced',
+         onTap: function(e) {
+           if (!$scope.data.num) {
+             //don't allow the user to close unless he enters 
+             e.preventDefault();
+           } else {
+             return $scope.data.num;
+           }
+         }
+       },
+     ]
+   });
+   myPopup.then(function(res) {
+     console.log('Tapped!', res);
+   });
+  };
+   // A confirm dialog
+   $scope.showConfirm = function() {
+    $gainTwo = window.localStorage['storedMaintenance'];
+    var gain = parseInt($gainTwo) + 2000;
+    window.localStorage['targetCals'] = gain;
+     var confirmPopup = $ionicPopup.confirm({
+       title: '',
+       template: 'Gain 2kg per week? <br/> Your Daily Caloric Target will be set to '+ gain
+       + 'Cal/week'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         console.log('You are sure');
+         document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+       } else {
+         console.log('You are not sure');
+       }
+     });
+   };
+
+
+
+   $scope.showGain15 = function() {
+    $gainTwo = window.localStorage['storedMaintenance'];
+    var gain = parseInt($gainTwo) + 1500;
+    window.localStorage['targetCals'] = gain;
+     var confirmPopup = $ionicPopup.confirm({
+       title: '',
+       template: 'Gain 1.5kg per week? <br/> Your Daily Caloric Target will be set to '+ gain
+       + 'Cal/week'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         console.log('You are sure');
+         document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+       } else {
+         console.log('You are not sure');
+       }
+     });
+   };
+
+   $scope.showGain1 = function() {
+    $gainTwo = window.localStorage['storedMaintenance'];
+    var gain = parseInt($gainTwo) + 1000;
+    window.localStorage['targetCals'] = gain;
+     var confirmPopup = $ionicPopup.confirm({
+       title: '',
+       template: 'Gain 1kg per week? <br/> Your Daily Caloric Target will be set to '+ gain
+       + 'Cal/week'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         console.log('You are sure');
+         document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+       } else {
+         console.log('You are not sure');
+       }
+     });
+   };
+
+
+   $scope.showGain05 = function() {
+    $gainTwo = window.localStorage['storedMaintenance'];
+    var gain = parseInt($gainTwo) + 500;
+    window.localStorage['targetCals'] = gain;
+     var confirmPopup = $ionicPopup.confirm({
+       title: '',
+       template: 'Gain 0.5kg per week? <br/> Your Daily Caloric Target will be set to '+ gain
+       + 'Cal/week'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         console.log('You are sure');
+         document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+       } else {
+         console.log('You are not sure');
+       }
+     });
+   };
+
+   $scope.showMaintain = function() {
+    $gainTwo = window.localStorage['storedMaintenance'];
+    var gain = parseInt($gainTwo);
+    window.localStorage['targetCals'] = gain;
+     var confirmPopup = $ionicPopup.confirm({
+       title: '',
+       template: 'Maintain Caloric Intake? <br/> Your Daily Caloric Target will be set to '+ gain
+       + 'Cal/week'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         console.log('You are sure');
+         document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+       } else {
+         console.log('You are not sure');
+       }
+     });
+   };
+
+   $scope.showLoss05 = function() {
+    $gainTwo = window.localStorage['storedMaintenance'];
+    var gain = parseInt($gainTwo) - 500;
+    window.localStorage['targetCals'] = gain;
+     var confirmPopup = $ionicPopup.confirm({
+       title: '',
+       template: 'Loose 0.5kg per week? <br/> Your Daily Caloric Target will be set to '+ gain
+       + 'Cal/week'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         console.log('You are sure');
+         document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+       } else {
+         console.log('You are not sure');
+       }
+     });
+   };
+
+   $scope.showLoss1 = function() {
+    $gainTwo = window.localStorage['storedMaintenance'];
+    var gain = parseInt($gainTwo) - 1000;
+    window.localStorage['targetCals'] = gain;
+     var confirmPopup = $ionicPopup.confirm({
+       title: '',
+       template: 'Loose 1kg per week? <br/> Your Daily Caloric Target will be set to '+ gain
+       + 'Cal/week'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         console.log('You are sure');
+         document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+       } else {
+         console.log('You are not sure');
+       }
+     });
+   };
+
+   $scope.showLoss15 = function() {
+    $gainTwo = window.localStorage['storedMaintenance'];
+    var gain = parseInt($gainTwo) - 1500;
+    window.localStorage['targetCals'] = gain;
+     var confirmPopup = $ionicPopup.confirm({
+       title: '',
+       template: 'Loose 1.5kg per week? <br/> Your Daily Caloric Target will be set to '+ gain
+       + 'Cal/week'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         console.log('You are sure');
+         document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+       } else {
+         console.log('You are not sure');
+       }
+     });
+   };
+
+   $scope.showLoss2 = function() {
+    $gainTwo = window.localStorage['storedMaintenance'];
+    var gain = parseInt($gainTwo) - 2000;
+    window.localStorage['targetCals'] = gain;
+     var confirmPopup = $ionicPopup.confirm({
+       title: '',
+       template: 'Loose 2kg per week? <br/> Your Daily Caloric Target will be set to '+ gain
+       + 'Cal/week'
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+         console.log('You are sure');
+         document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+       } else {
+         console.log('You are not sure');
+       }
+     });
+   };
+
+
+
+   // An alert dialog
+   $scope.showAlert = function() {
+     var alertPopup = $ionicPopup.alert({
+       title: 'Don\'t eat that!',
+       template: 'It might taste good'
+     });
+     alertPopup.then(function(res) {
+       console.log('Thank you for not eating my delicious ice cream cone');
+     });
+   };
 });
+
+
+
 
