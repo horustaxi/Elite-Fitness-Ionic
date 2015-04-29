@@ -1,8 +1,11 @@
 
-
+$count = 0;
+window.localStorage['storedMaintenance'] = 0;
 angular.module('ionicApp', ['ionic'])
 	
 	.config(function($stateProvider, $urlRouterProvider) {
+    window.localStorage['consumedCalories'] = "";
+    window.localStorage['Calories+'] = 0;
 
   $stateProvider
 
@@ -65,6 +68,40 @@ angular.module('ionicApp', ['ionic'])
 })
 
 .controller('CheckinCtrl', function($scope, $ionicModal) {
+
+  $scope.saveConsumed = function() {
+    //SAVING TO LOCAL STORAGE OF ALL THE CALORIES CONSUMED
+    window.localStorage['consumedCalories'] += " <br/> + "+ consumed.value + " Cal";
+    window.localStorage['Calories+'] = parseInt(window.localStorage['Calories+']) + parseInt(consumed.value);
+    //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE
+    document.getElementById('consumedSpan').innerHTML = window.localStorage['consumedCalories'];
+    document.getElementById('consumedTotal').innerHTML = window.localStorage['Calories+'];
+    document.getElementById('Consumed').innerHTML = window.localStorage['Calories+']; 
+    document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
+  }
+
+  $scope.saveExpent= function() {
+    //SAVING TO LOCAL STORAGE OF ALL THE CALORIES Expent
+    window.localStorage['consumedCalories'] += " <br/> - "+ consumed.value + " Cal";
+    window.localStorage['Calories+'] -= parseInt(consumed.value);
+    //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE
+    document.getElementById('consumedSpan').innerHTML = window.localStorage['consumedCalories'];
+    document.getElementById('consumedTotal').innerHTML = window.localStorage['Calories+'];
+    document.getElementById('Consumed').innerHTML = window.localStorage['Calories+'];
+    document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
+  }
+
+  $scope.clearLog= function() {
+    //SAVING TO LOCAL STORAGE OF ALL THE CALORIES Expent
+    window.localStorage['consumedCalories'] = "";
+    window.localStorage['Calories+'] = 0;
+    //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE
+    document.getElementById('consumedSpan').innerHTML = window.localStorage['consumedCalories'];
+    document.getElementById('consumedTotal').innerHTML = window.localStorage['Calories+'];
+    document.getElementById('Consumed').innerHTML = window.localStorage['Calories+'];
+    document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
+  }
+
   $scope.showForm = true;
   
   $scope.shirtSizes = [
@@ -87,6 +124,8 @@ angular.module('ionicApp', ['ionic'])
 
 
 .controller('CheckinCtrl1', function($scope, $ionicModal,$window) {
+
+  
 
 $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
     $scope.updateLocalStorage = function() {
@@ -129,10 +168,10 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
     $BMR = 10 * $weight + 6.25 * $height - 5 * $age;
 
     if(isMale === 'false'){
-      $BMR -= 161;
+      $BMR =  $BMR - 161;
     }
     if(isMale === 'true'){
-      $BMR += 5;
+      $BMR = $BMR + 5;
     }
 
     $maintenanceWeight = $BMR;
@@ -192,6 +231,8 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
 
 
 .controller('MainCtrl',function($scope, $ionicPopup, $timeout, $state) {
+
+
 
   $scope.toIntro = function(){
     $state.go('intro');
