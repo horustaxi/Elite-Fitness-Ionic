@@ -636,9 +636,6 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
        }
      });
    };
-
-
-
 });
 
 
