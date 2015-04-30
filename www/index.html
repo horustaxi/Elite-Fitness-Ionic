@@ -13,6 +13,7 @@
     <link href="style/main.css" rel="stylesheet">
     <script src="scripts/main.js"></script>
     <script src="js/app.js"></script>
+    <script src="scripts/Chart.js"></script>
     <!--
     <script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
     <script src="scripts/main.js"></script>
@@ -85,7 +86,7 @@
           <ion-slide>
             <h3 style="padding-top:130px;">Share & Rate!</h3>
             <p style="padding:10px;padding-bottom:70px">
-              If you liked this App Please Rate and Share Elite Fitness with your friends!
+              If you liked this App Please Rate and Share Elite Fitness!
             </p>
 			<a href="#/event/home" menu-close>
 			<button class="button icon-right ion-chevron-right button-positive"> Begin   </button>
@@ -111,9 +112,35 @@
               
             </h4>
             <br/>
-            <a style="text-decoration: none;border:0px;"  class="item" menu-close><button ng-click="closeModal()" class="button button-full button-positive">
+            <a href="#/event/home"style="text-decoration: none;border:0px;"  class="item" menu-close><button ng-click="closeModal()" class="button button-full button-positive">
             Save Maintenance
             </button></a>
+
+            </ion-content>
+          </form>
+        </ion-modal-view>
+    </script>
+
+
+    <!--MY LONG FORM 2 -->
+    <script id="templates/mylongform2.html" type="text/ng-template" >
+        <ion-modal-view class="product edit create" >
+          <form name="itemEdit"  novalidate>
+            <ion-header-bar class="bar-positive fix-buttons">
+              <a class="button" ng-click="closeModal2()">OK</a>
+              <h1 class="title">Results</h1>
+            </ion-header-bar>
+            <ion-content has-bouncing="true" style="padding:30px;text-align:center;">
+            <h2 style="color:#3299CC;">Remaining</h2><h2> VS</h2><h2 style="color:#F7464A;">Consumed</h2>
+
+
+                  <div id="canvas-holder">
+            <canvas id="chart-area" width="300" height="300"/>
+          </div>
+            <br/>
+            <button ng-click="closeModal2()" class="button button-full button-positive">
+            Close Chart
+            </button>
 
             </ion-content>
           </form>
@@ -129,8 +156,7 @@
 
         <ion-side-menu-content>
           <ion-nav-bar class="bar-light">
-            <ion-nav-back-button>
-            </ion-nav-back-button>
+            
 
             <ion-nav-buttons side="left">
               <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
@@ -148,10 +174,10 @@
           <ion-content>
             <ul class="list">
               <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
-			  <a href="#/event/home" class="item" menu-close>Home</a>
-			  <a href="#/event/calculator" class="item" menu-close>Calculator</a>
-			  <a href="#/event/check-in" class="item" menu-close>Targets</a>
-              <a href="#/event/test" class="item" menu-close>Caloric Intake</a>
+      			  <a href="#/event/home" class="item icon ion-ios-home" menu-close>&nbsp;&nbsp;&nbsp; Home</a>
+      			  <a href="#/event/calculator" class="item icon ion-calculator" menu-close>&nbsp;&nbsp;&nbsp; Calculator</a>
+      			  <a href="#/event/check-in" class="item icon ion-disc" menu-close>&nbsp;&nbsp;&nbsp; Targets</a>
+              <a href="#/event/test" class="item icon ion-clipboard" menu-close>&nbsp;&nbsp;&nbsp; Diary</a>
             </ul>
           </ion-content>
         </ion-side-menu>
@@ -161,9 +187,9 @@
 
 	<!--CONSUMED TEMPLATE -->
     <script id="templates/test.html" type="text/ng-template">
-      <ion-view view-title="Calories Consumed/expenditure">
+      <ion-view view-title="Consumed/Expended">
         <ion-content class="padding">          
-              <input id="consumed" type="text" placeholder="Calories" style="float:left;padding-left:20%;font-size:20px;width:200px;">
+              <input id="consumed" type="tel" placeholder="Calories" style="float:left;padding-left:20%;font-size:20px;width:200px;">
               <button ng-click="saveConsumed()" class="button button-light icon ion-plus-circled"></button>
               <button ng-click="saveExpent()" class="button button-light icon ion-minus-circled"></button>
               <h3 style="text-align:center;">DIARY LOG</h3>
@@ -236,7 +262,7 @@
       <input type="tel" ng-model="input.height" id="height">
       </label>
       </li>
-      <h6 style="color:red;text-align:center;padding-left:20px;padding-right:20px;">NOTE:<br />If Used < Back Button You Must Save Current Calculation Or Your Maintenance Caloric Intake Will Be RESET!</h6>
+      <h6 style="color:red;text-align:center;padding-left:20px;padding-right:20px;">NOTE:<br />If you used the < Back Button to get to this view you must set a NEW Maintenance Caloric Intake or it will be reset!</h6>
 		</ul>
 
 		<div style="margin-left: auto; margin-right: auto; width: 60%;padding-top:0px;">
@@ -256,6 +282,10 @@
         <ion-content>
         <div class="row">
         <div class="col" ng-controller="MainCtrl">
+          <button class="button button-full button-dark" ng-click="showPopup()">
+            Gain/Loose Custom amount per week
+          </button>
+
           <button class="button button-full button-balanced" ng-click="showConfirm()">
             Gain 2kg per week
           </button>
@@ -292,9 +322,7 @@
             Loose 2kg per week
           </button>
 
-          <button class="button button-full button-dark" ng-click="showPopup()">
-            Gain/Loose Custom amount per week
-          </button>
+          
 			  </div>
         </div>
         </ion-content>
@@ -323,10 +351,12 @@
               <img class="full-image" src="images/consumed.jpg">
             </div></a>
 
+
+            <div ng-click="openModal2()">
         		<div class="item item-body">
             <span style="position:absolute;padding-top:75px;padding-left:130px;color:#3299CC" id="Remaining">0</span>
         		  <img class="full-image" src="images/remain.jpg">
-        		</div>       		
+        		</div> </div>  	
 
             <div class="item item-body" style="margin-bottom:40px;">
               <img class="full-image" src="images/progress.jpg">

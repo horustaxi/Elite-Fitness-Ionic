@@ -19,7 +19,8 @@ angular.module('ionicApp', ['ionic'])
       url: "/home",
       views: {
         'menuContent' :{
-          templateUrl: "templates/home.html"
+          templateUrl: "templates/home.html",
+          controller: "HomeCtr"
         }
       }
     })
@@ -70,17 +71,22 @@ angular.module('ionicApp', ['ionic'])
 .controller('CheckinCtrl', function($scope, $ionicModal) {
 
   $scope.saveConsumed = function() {
-    //SAVING TO LOCAL STORAGE OF ALL THE CALORIES CONSUMED
-    window.localStorage['consumedCalories'] += " <br/> + "+ consumed.value + " Cal";
-    window.localStorage['Calories+'] = parseInt(window.localStorage['Calories+']) + parseInt(consumed.value);
-    //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE
-    document.getElementById('consumedSpan').innerHTML = window.localStorage['consumedCalories'];
-    document.getElementById('consumedTotal').innerHTML = window.localStorage['Calories+'];
-    document.getElementById('Consumed').innerHTML = window.localStorage['Calories+']; 
-    document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
+    if (!consumed.value) {
+    }else{
+      //SAVING TO LOCAL STORAGE OF ALL THE CALORIES CONSUMED
+      window.localStorage['consumedCalories'] += " <br/> + "+ consumed.value + " Cal";
+      window.localStorage['Calories+'] = parseInt(window.localStorage['Calories+']) + parseInt(consumed.value);
+      //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE
+      document.getElementById('consumedSpan').innerHTML = window.localStorage['consumedCalories'];
+      document.getElementById('consumedTotal').innerHTML = window.localStorage['Calories+'];
+      document.getElementById('Consumed').innerHTML = window.localStorage['Calories+']; 
+      document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
+    }
   }
 
   $scope.saveExpent= function() {
+    if (!consumed.value) {
+    }else{
     //SAVING TO LOCAL STORAGE OF ALL THE CALORIES Expent
     window.localStorage['consumedCalories'] += " <br/> - "+ consumed.value + " Cal";
     window.localStorage['Calories+'] -= parseInt(consumed.value);
@@ -89,6 +95,7 @@ angular.module('ionicApp', ['ionic'])
     document.getElementById('consumedTotal').innerHTML = window.localStorage['Calories+'];
     document.getElementById('Consumed').innerHTML = window.localStorage['Calories+'];
     document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
+  }
   }
 
   $scope.clearLog= function() {
@@ -195,14 +202,15 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
     }
     //window.alert($BMR);
     $scope.modal.show();
-    document.getElementById('span1').innerHTML = 'Your BMR is <b>' + Math.round($BMR) +"</b> Cals/day "
-    + "<br /> You need <b>"+ Math.round($maintenanceWeight)+"</b> Cal/day to maintain your weight.";
+    document.getElementById('span1').innerHTML = 'Your BMR is <b style="color:black">' + Math.round($BMR) +"</b> Cals/day "
+    + '<br /> You need <b style="color:black">'+ Math.round($maintenanceWeight)+"</b> Cal/day to maintain your weight.";
     
 
-    document.getElementById('Maintain').innerHTML = window.localStorage['storedMaintenance']+" Cal/day";
+    
   }
   $scope.closeModal = function(){
     window.localStorage['storedMaintenance'] = Math.round($maintenanceWeight);
+    document.getElementById('Maintain').innerHTML = window.localStorage['storedMaintenance']+" Cal/day";
     $scope.modal.hide();
   }
 })
@@ -229,9 +237,51 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
 })
 
 
+.controller('HomeCtr', function($scope, $state, $ionicSlideBoxDelegate,$ionicModal,$window) {
+
+  $ionicModal.fromTemplateUrl('templates/mylongform2.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+ 
+  $scope.openModal2 = function(){
+    var remain = window.localStorage['targetCals'] - window.localStorage['Calories+'];
+    var cons = window.localStorage['Calories+'];
+      var pieData = [
+        {
+          value: cons,
+          color:"#F7464A",
+          highlight: "#FF5A5E",
+          label: "Consumed (cal)"
+        },
+        {
+          value: remain,
+          color: "#3299CC",
+          highlight: "#5AD3D1",
+          label: "Remaining (cal)"
+        },
+      ];
+
+   
+    $scope.modal.show();
+    
+        var ctx = document.getElementById("chart-area").getContext("2d");
+        window.myPie = new Chart(ctx).Pie(pieData);
+  }
+
+  $scope.closeModal2 = function(){
+    $scope.modal.hide();
+  }
+})
+
+
 
 .controller('MainCtrl',function($scope, $ionicPopup, $timeout, $state) {
 
+
+  
 
 
   $scope.toIntro = function(){
@@ -245,7 +295,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
    // An elaborate, custom popup
    var myPopup = $ionicPopup.show({
      template: '<input type="tel" ng-model="data.num">',
-     title: 'Enter Gain/Loss Amount',
+     title: 'Enter Gain/Loss Amount (Kg/wk)',
      subTitle: 'Please use decimals & integers only',
      scope: $scope,
      buttons: [
@@ -256,9 +306,12 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
              e.preventDefault();
            } else {
              $gains = window.localStorage['storedMaintenance'];
-             var gains = $gains + ((data.num.value * -3500) / 7);
+             var gains = 0;
+             gains = parseInt(parseInt($gains) - ($scope.data.num * 1000));
              window.localStorage['targetCals'] = gains;
              document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+             document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
+             showAlert();
              return gains;
            }
          }
@@ -272,7 +325,14 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
              //don't allow the user to close unless he enters 
              e.preventDefault();
            } else {
-             return $scope.data.num;
+            $gains = window.localStorage['storedMaintenance'];
+             var gains = 0;
+             gains = parseInt(parseInt($gains) + ($scope.data.num * 1000));
+             window.localStorage['targetCals'] = gains;
+             document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+             document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
+             return gains;
+             showAlert();
            }
          }
        },
@@ -296,6 +356,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
        if(res) {
          console.log('You are sure');
          document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+         document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
        } else {
          console.log('You are not sure');
        }
@@ -317,6 +378,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
        if(res) {
          console.log('You are sure');
          document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+         document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
        } else {
          console.log('You are not sure');
        }
@@ -336,6 +398,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
        if(res) {
          console.log('You are sure');
          document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+         document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
        } else {
          console.log('You are not sure');
        }
@@ -356,6 +419,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
        if(res) {
          console.log('You are sure');
          document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+         document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
        } else {
          console.log('You are not sure');
        }
@@ -375,6 +439,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
        if(res) {
          console.log('You are sure');
          document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+         document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
        } else {
          console.log('You are not sure');
        }
@@ -394,6 +459,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
        if(res) {
          console.log('You are sure');
          document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+         document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
        } else {
          console.log('You are not sure');
        }
@@ -413,6 +479,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
        if(res) {
          console.log('You are sure');
          document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+         document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
        } else {
          console.log('You are not sure');
        }
@@ -432,6 +499,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
        if(res) {
          console.log('You are sure');
          document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+        document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
        } else {
          console.log('You are not sure');
        }
@@ -451,6 +519,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
        if(res) {
          console.log('You are sure');
          document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
+         document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
        } else {
          console.log('You are not sure');
        }
