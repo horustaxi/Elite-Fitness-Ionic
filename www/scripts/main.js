@@ -53,6 +53,16 @@ angular.module('ionicApp', ['ionic'])
       }
     })
 
+  .state('eventmenu.progress', {
+      url: "/progress",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/progress.html",
+          controller: "CheckinCtrl1"
+        }
+      }
+    })
+
   .state('intro', {
     url: '/',
     templateUrl: 'templates/intro.html',
@@ -133,6 +143,90 @@ angular.module('ionicApp', ['ionic'])
 .controller('CheckinCtrl1', function($scope, $ionicModal,$window) {
 
   
+    var remain = window.localStorage['targetCals'] - window.localStorage['Calories+'];
+    var cons = window.localStorage['Calories+'];
+    var goal = window.localStorage['targetCals'];
+
+    if (remain  < 0.5) {
+      remain = 0;
+    }
+    if(cons < 0.5 ){
+      cons = 0;
+    }
+    if(goal < 0.5 ){
+      goal = 0;
+    }
+      var pieData = [
+        {
+          value: cons,
+          color:"#F7464A",
+          highlight: "#FF5A5E",
+          label: "Consumed (cal)"
+        },
+        {
+          value: remain,
+          color: "#3299CC",
+          highlight: "#5AD3D1",
+          label: "Remaining (cal)"
+        },
+      ];
+
+          var lineChartData = {
+      labels : ["Goal Calories","Consumed Total","Goal Calories"],
+      datasets : [
+        {
+          label: "Comparison",
+          fillColor : "rgba(220,220,220,0.2)",
+          strokeColor : "rgba(220,220,220,1)",
+          pointColor : "rgba(220,220,220,1)",
+          pointStrokeColor : "#fff",
+          pointHighlightFill : "#fff",
+          pointHighlightStroke : "rgba(220,220,220,1)",
+          data : [goal,cons,goal]
+        },
+      ]
+
+    }
+
+    var lineChartWithStart = {
+      labels : ["Start Cal","Consumed Total","Goal Calories"],
+      datasets : [
+        {
+          label: "Comparison",
+          fillColor : "rgba(220,220,220,0.2)",
+          strokeColor : "rgba(220,220,220,1)",
+          pointColor : "rgba(220,220,220,1)",
+          pointStrokeColor : "#fff",
+          pointHighlightFill : "#fff",
+          pointHighlightStroke : "rgba(220,220,220,1)",
+          data : [0,cons,goal]
+        },
+      ]
+
+    }
+
+$scope.$on('$stateChangeSuccess', function() {
+   // the view should be ready and transition done
+
+
+    console.log("test2");
+        var ctx = document.getElementById("chart-area2").getContext("2d");
+        window.myDoughnut = new Chart(ctx).Doughnut(pieData, {responsive : false});
+
+        var ctx = document.getElementById("chart-area5").getContext("2d");
+        window.myLine = new Chart(ctx).Line(lineChartData, {
+          responsive: true
+        });
+
+        var ctx = document.getElementById("chart-area6").getContext("2d");
+        window.myLine = new Chart(ctx).Line(lineChartWithStart, {
+          responsive: false
+        });
+});
+   
+
+
+
 
 $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
     $scope.updateLocalStorage = function() {
@@ -152,6 +246,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
     }).then(function(modal) {
       $scope.modal = modal;
     });
+
 
   $scope.openModal = function(){
 

@@ -85,11 +85,11 @@
           </ion-slide>
           <ion-slide>
             <h3 style="padding-top:130px;">Share & Rate!</h3>
-            <p style="padding:10px;padding-bottom:70px">
+            <p style="padding:30px;padding-bottom:50px">
               If you liked this App Please Rate and Share Elite Fitness!
             </p>
 			<a href="#/event/home" menu-close>
-			<button class="button icon-right ion-chevron-right button-positive"> Begin   </button>
+			<button style="width:120px;" class="button icon-right ion-chevron-right button-positive">Begin</button>
 			</a>
           </ion-slide>
         </ion-slide-box>
@@ -178,6 +178,7 @@
       			  <a href="#/event/calculator" class="item icon ion-calculator" menu-close>&nbsp;&nbsp;&nbsp; Calculator</a>
       			  <a href="#/event/check-in" class="item icon ion-disc" menu-close>&nbsp;&nbsp;&nbsp; Targets</a>
               <a href="#/event/test" class="item icon ion-clipboard" menu-close>&nbsp;&nbsp;&nbsp; Diary</a>
+              <a href="#/event/progress" class="item icon ion-arrow-graph-up-right" menu-close>&nbsp;&nbsp;&nbsp; Progress</a>
             </ul>
           </ion-content>
         </ion-side-menu>
@@ -202,6 +203,28 @@
         </ion-content>
       </ion-view>
     </script>
+
+
+    <!--PROGRESS TEMPLATE -->
+    <script id="templates/progress.html" type="text/ng-template">
+      <ion-view view-title="Charts/Graphs">
+        <ion-content class="padding" >    
+          <div id="canvas-holder">
+          <ul>
+          <li style="padding-bottom:50px;">
+          <canvas id="chart-area5" width="350" height="300"/>
+          </li>
+          <li style="padding-bottom:50px;">
+          <canvas id="chart-area2" width="350" height="300"/>
+          </li>
+          <li style="padding-bottom:50px;">
+          <canvas id="chart-area6" width="350" height="300"/>
+          </li>
+          </ul>
+        </div>
+        </ion-content >
+      </ion-view>
+    </script>
 	
 	
 	<!--CALCULATOR TEMPLATE -->
@@ -224,7 +247,7 @@
 			 margin-right: auto;
 			 width: 55%;">
       			   <input type="checkbox" ng-model="ni_toggle" ng-change="updateLocalStorage()" id="gender"/>
-      			   <div class="track">
+      			   <div class="track"  >
       				 <div class="handle" ></div>
       			   </div>
       			   <div style="float:right;font-size:20px;">Male</div>
@@ -358,9 +381,10 @@
         		  <img class="full-image" src="images/remain.jpg">
         		</div> </div>  	
 
+            <a href="#/event/progress" menu-close>
             <div class="item item-body" style="margin-bottom:40px;">
               <img class="full-image" src="images/progress.jpg">
-            </div>
+            </div></a>
           </ion-content >
       </ion-view>
     </script>
