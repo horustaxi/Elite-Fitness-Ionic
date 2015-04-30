@@ -1,11 +1,14 @@
 
+//USE THIS COUNTER TO FIGURE OUT WEATHER TOGGLE IS ON OR OFF
 $count = 0;
+//SETTING DEFAULT VALUE TO MAINTENANCE
 window.localStorage['storedMaintenance'] = 0;
+window.localStorage['consumedCalories'] = "";
+window.localStorage['Calories+'] = 0;
 angular.module('ionicApp', ['ionic'])
 	
-	.config(function($stateProvider, $urlRouterProvider) {
-    window.localStorage['consumedCalories'] = "";
-    window.localStorage['Calories+'] = 0;
+//ALL CONTROLERS ARE SET FOR TEMPLATES HERE
+.config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
 
@@ -78,15 +81,19 @@ angular.module('ionicApp', ['ionic'])
   $urlRouterProvider.otherwise("/");
 })
 
+/*
+* START OF CONTROLERS FOR THE VIEWS
+*/
 .controller('CheckinCtrl', function($scope, $ionicModal) {
 
+  //CALCULATING AND PUSHING TO OVERVIEW 
   $scope.saveConsumed = function() {
     if (!consumed.value) {
     }else{
       //SAVING TO LOCAL STORAGE OF ALL THE CALORIES CONSUMED
       window.localStorage['consumedCalories'] += " <br/> + "+ consumed.value + " Cal";
       window.localStorage['Calories+'] = parseInt(window.localStorage['Calories+']) + parseInt(consumed.value);
-      //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE
+      //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE (INSERTING INTO HTML BY ID)
       document.getElementById('consumedSpan').innerHTML = window.localStorage['consumedCalories'];
       document.getElementById('consumedTotal').innerHTML = window.localStorage['Calories+'];
       document.getElementById('Consumed').innerHTML = window.localStorage['Calories+']; 
@@ -94,13 +101,14 @@ angular.module('ionicApp', ['ionic'])
     }
   }
 
+  //CALCULATING AND PUSHING TO OVERVIEW 
   $scope.saveExpent= function() {
     if (!consumed.value) {
     }else{
     //SAVING TO LOCAL STORAGE OF ALL THE CALORIES Expent
     window.localStorage['consumedCalories'] += " <br/> - "+ consumed.value + " Cal";
     window.localStorage['Calories+'] -= parseInt(consumed.value);
-    //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE
+    //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE (INSERTING INTO HTML BY ID)
     document.getElementById('consumedSpan').innerHTML = window.localStorage['consumedCalories'];
     document.getElementById('consumedTotal').innerHTML = window.localStorage['Calories+'];
     document.getElementById('Consumed').innerHTML = window.localStorage['Calories+'];
@@ -108,44 +116,28 @@ angular.module('ionicApp', ['ionic'])
   }
   }
 
+  //CALCULATING AND PUSHING TO OVERVIEW 
   $scope.clearLog= function() {
     //SAVING TO LOCAL STORAGE OF ALL THE CALORIES Expent
     window.localStorage['consumedCalories'] = "";
     window.localStorage['Calories+'] = 0;
-    //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE
+    //DISPLAYING THE CALORIES CONSUMED ON THE CONSUMED TEMPLATE (INSERTING INTO HTML BY ID)
     document.getElementById('consumedSpan').innerHTML = window.localStorage['consumedCalories'];
     document.getElementById('consumedTotal').innerHTML = window.localStorage['Calories+'];
     document.getElementById('Consumed').innerHTML = window.localStorage['Calories+'];
     document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
   }
-
-  $scope.showForm = true;
-  
-  $scope.shirtSizes = [
-    { text: 'Large', value: 'L' },
-    { text: 'Medium', value: 'M' },
-    { text: 'Small', value: 'S' }
-  ];
-  
-  $scope.attendee = {};
-  $scope.submit = function() {
-    if(!$scope.attendee.firstname) {
-      alert('Info required');
-      return;
-    }
-    $scope.showForm = false;
-    $scope.attendees.push($scope.attendee);
-  };
 })
 
 
-
+//ANOTHER CONTROLER FOR ANOTHER THEME
 .controller('CheckinCtrl1', function($scope, $ionicModal,$window) {
-
-  
     var remain = parseInt(window.localStorage['targetCals']) - parseInt(window.localStorage['Calories+']);
     var cons = parseInt(window.localStorage['Calories+']);
     var goal = parseInt(window.localStorage['targetCals']);
+
+    //TRYING TO PREVENT A NEGATIVE VALUE THAT SEEMS TO COUSE THE GRAPH TO CRASH
+    //MOST LIKELY GRAPH.JS FAULT FOR NOT HANDELING NEGATIVES ERROR = -0.5 RADIUS
 
     if (remain  < 0.1) {
       remain = 0.0;
@@ -156,6 +148,9 @@ angular.module('ionicApp', ['ionic'])
     if(goal < 0.1 ){
       goal = 0.0;
     }
+
+    //SETTING CONFIGS FOR THE GRAPHS
+
       var pieData = [
         {
           value: cons,
@@ -205,10 +200,9 @@ angular.module('ionicApp', ['ionic'])
 
     }
 
+//CHECKS IF THE VIEW IS FULLY LOADED BEFORE DISPLAYING THE CHARTS ($stateChangeSuccess) ELSE CRASH OCCURS
+//REFRENCES THE CANVAS IN HTML AND DRAWS CHARTS INSIDE THEM
 $scope.$on('$stateChangeSuccess', function() {
-   // the view should be ready and transition done
-
-
     console.log("test2");
         var ctx = document.getElementById("chart-area2").getContext("2d");
         window.myDoughnut = new Chart(ctx).Doughnut(pieData, {responsive : false});
@@ -223,10 +217,6 @@ $scope.$on('$stateChangeSuccess', function() {
           responsive: false
         });
 });
-   
-
-
-
 
 $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
     $scope.updateLocalStorage = function() {
@@ -269,6 +259,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
 
     $BMR = 10 * $weight + 6.25 * $height - 5 * $age;
 
+    //IF THE USER IS A MALE OR FEMALE CHANGES MAINTENANCE
     if(isMale === 'false'){
       $BMR =  $BMR - 161;
     }
@@ -278,6 +269,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
 
     $maintenanceWeight = $BMR;
 
+    //CALCULATING ACTIVITY 
     switch($exc){
       case '1':
         $maintenanceWeight *= 1.2;
@@ -295,7 +287,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
         $maintenanceWeight *= 1.9;
         break;
     }
-    //window.alert($BMR);
+    //DISPLAY THIS OUT 
     $scope.modal.show();
     document.getElementById('span1').innerHTML = 'Your BMR is <b style="color:black">' + Math.round($BMR) +"</b> Cals/day "
     + '<br /> You need <b style="color:black">'+ Math.round($maintenanceWeight)+"</b> Cal/day to maintain your weight.";
@@ -341,6 +333,7 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
       $scope.modal = modal;
     });
  
+  //CHART PIE SETTING UP AND DISPLAY
   $scope.openModal2 = function(){
     var remain = window.localStorage['targetCals'] - window.localStorage['Calories+'];
     var cons = window.localStorage['Calories+'];
@@ -372,12 +365,8 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
 })
 
 
-
+//ANOTHER CONTROLER
 .controller('MainCtrl',function($scope, $ionicPopup, $timeout, $state) {
-
-
-  
-
 
   $scope.toIntro = function(){
     $state.go('intro');
@@ -650,16 +639,6 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
 
 
 
-   // An alert dialog
-   $scope.showAlert = function() {
-     var alertPopup = $ionicPopup.alert({
-       title: 'Don\'t eat that!',
-       template: 'It might taste good'
-     });
-     alertPopup.then(function(res) {
-       console.log('Thank you for not eating my delicious ice cream cone');
-     });
-   };
 });
 
 

@@ -9,17 +9,11 @@
     <link rel="stylesheet" href="lib/ionic/css/ionic.css">
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     
-    <!-- My App -->
+    <!-- My App Libs-->
     <link href="style/main.css" rel="stylesheet">
     <script src="scripts/main.js"></script>
     <script src="js/app.js"></script>
     <script src="scripts/Chart.js"></script>
-    <!--
-    <script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
-    <script src="scripts/main.js"></script>
-    <link href="//code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
-  	<link href="style/main.css" rel="stylesheet">
-    -->
   </head>
 
   <body ng-controller="MainCtrl" ng-app="ionicApp">
@@ -96,7 +90,7 @@
       </ion-view>
     </script>
 
-    <!--MY LONG FORM -->
+    <!--FORM FOR BMR & MAINTANANCE -->
     <script id="templates/mylongform.html" type="text/ng-template" >
         <ion-modal-view class="product edit create" >
           <form name="itemEdit"  novalidate>
@@ -122,7 +116,7 @@
     </script>
 
 
-    <!--MY LONG FORM 2 -->
+    <!--MY MODULE FOR PIE CHART -->
     <script id="templates/mylongform2.html" type="text/ng-template" >
         <ion-modal-view class="product edit create" >
           <form name="itemEdit"  novalidate>
@@ -268,16 +262,13 @@
 			</select>
 		  </label>
 		  </li>
-		  
-		
+
 		<li>
 		  <label class="item item-input">
 		  <span class="input-label">Weight (kg)</span>
 		  <input id="weight" type="tel" ng-model="input.weight">
 		  </label>
 		  </li>
-		  
-		  
 		  
 		  <li>
       <label class="item item-input">
@@ -347,7 +338,6 @@
             Loose 2kg per week
           </button>
 
-          
 			  </div>
         </div>
         </ion-content>
