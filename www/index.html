@@ -211,7 +211,7 @@
         <ion-content class="padding" >    
           <div id="canvas-holder">
           <ul>
-          <li style="padding-bottom:50px;">
+          <li style="padding-b:50px;">
           <canvas id="chart-area5" width="350" height="300"/>
           </li>
           <li style="padding-bottom:50px;">
@@ -285,11 +285,13 @@
       <input type="tel" ng-model="input.height" id="height">
       </label>
       </li>
-      <h6 style="color:red;text-align:center;padding-left:20px;padding-right:20px;">NOTE:<br />If you used the < Back Button to get to this view you must set a NEW Maintenance Caloric Intake or it will be reset!</h6>
+      <h6 style="color:red;text-align:center;padding-left:40px;padding-right:20px;">NOTE:<br />If you would like 
+      to use a custom maintenance weight please us the pen icon on the left!</h6>
+      <a class="button button-icon icon ion-settings" ng-click="showPopup2()" style="position:absolute;margin-left:10px;margin-top:-20px"></a>
 		</ul>
 
-		<div style="margin-left: auto; margin-right: auto; width: 60%;padding-top:0px;">
-		<a on-touch="onTouch()" ng-click="openModal()"><img style="width:200px;"src="images/go.png "></a></div>
+		<div style="margin-left: auto; margin-right: auto; width: 50%;padding-top:0px;padding-bottom:100px;">
+		<a on-touch="onTouch()" ng-click="openModal()"><img style="width:180px;"src="images/go.png "></a></div>
 		<form>
         </ion-content>
       </ion-view>

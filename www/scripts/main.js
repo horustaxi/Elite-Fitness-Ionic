@@ -143,18 +143,18 @@ angular.module('ionicApp', ['ionic'])
 .controller('CheckinCtrl1', function($scope, $ionicModal,$window) {
 
   
-    var remain = window.localStorage['targetCals'] - window.localStorage['Calories+'];
-    var cons = window.localStorage['Calories+'];
-    var goal = window.localStorage['targetCals'];
+    var remain = parseInt(window.localStorage['targetCals']) - parseInt(window.localStorage['Calories+']);
+    var cons = parseInt(window.localStorage['Calories+']);
+    var goal = parseInt(window.localStorage['targetCals']);
 
-    if (remain  < 0.5) {
-      remain = 0;
+    if (remain  < 0.1) {
+      remain = 0.0;
     }
-    if(cons < 0.5 ){
-      cons = 0;
+    if(cons < 0.1 ){
+      cons = 0.0;
     }
-    if(goal < 0.5 ){
-      goal = 0;
+    if(goal < 0.1 ){
+      goal = 0.0;
     }
       var pieData = [
         {
@@ -384,6 +384,33 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
   }
 
  // Triggered on a button click, or some other target
+ $scope.showPopup2 = function() {
+   $scope.data = {}
+
+   // An elaborate, custom popup
+   var myPopup = $ionicPopup.show({
+     template: '<input type="tel" ng-model="data.num2">',
+     title: 'Enter maintenance calories',
+     subTitle: 'Please use decimals & integers only',
+     scope: $scope,
+     buttons: [
+       { text: 'Exit' ,type: 'button-light'},
+       { text: 'Accept',type: 'button-positive',onTap: function(e) {
+           if (!$scope.data.num2) {
+             //don't allow the user to close unless he enters 
+             e.preventDefault();
+           } else {
+             window.localStorage['storedMaintenance'] = parseInt($scope.data.num2);
+             document.getElementById('Maintain').innerHTML = parseInt($scope.data.num2);
+           }
+         }
+        },
+     ]
+   });
+  };
+
+
+   //ANOTHER POPUP
  $scope.showPopup = function() {
    $scope.data = {}
 
