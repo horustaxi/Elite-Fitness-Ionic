@@ -422,8 +422,6 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
              window.localStorage['targetCals'] = gains;
              document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
              document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
-             showAlert();
-             return gains;
            }
          }
         },
@@ -442,8 +440,6 @@ $scope.ni_toggle = $window.localStorage.getItem('ni_toggle') === 'true';
              window.localStorage['targetCals'] = gains;
              document.getElementById('Target').innerHTML = window.localStorage['targetCals'] + ' Cal/day';
              document.getElementById('Remaining').innerHTML = window.localStorage['targetCals'] - window.localStorage['Calories+'];
-             return gains;
-             showAlert();
            }
          }
        },
