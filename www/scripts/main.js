@@ -203,17 +203,17 @@ angular.module('ionicApp', ['ionic'])
 //CHECKS IF THE VIEW IS FULLY LOADED BEFORE DISPLAYING THE CHARTS ($stateChangeSuccess) ELSE CRASH OCCURS
 //REFRENCES THE CANVAS IN HTML AND DRAWS CHARTS INSIDE THEM
 $scope.$on('$stateChangeSuccess', function() {
-    console.log("test2");
+  
         var ctx = document.getElementById("chart-area2").getContext("2d");
         window.myDoughnut = new Chart(ctx).Doughnut(pieData, {responsive : false});
 
-        var ctx = document.getElementById("chart-area5").getContext("2d");
-        window.myLine = new Chart(ctx).Line(lineChartData, {
+        var ctx2 = document.getElementById("chart-area5").getContext("2d");
+        window.myLine = new Chart(ctx2).Line(lineChartData, {
           responsive: true
         });
 
-        var ctx = document.getElementById("chart-area6").getContext("2d");
-        window.myLine = new Chart(ctx).Line(lineChartWithStart, {
+        var ctx3 = document.getElementById("chart-area6").getContext("2d");
+        window.myLine = new Chart(ctx3).Line(lineChartWithStart, {
           responsive: false
         });
 });
