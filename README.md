@@ -1,4 +1,4 @@
-<h3>What is Elite Fitness</h3>
+<h3>What is Elite Fitness?</h3>
 Elite Fitness lets you Calculate your maintenance caloric intake using a simple, user friendly calculator.
 Define weight loss/gain goals and set daily caloric intake along with progress tracking using in app charting.
 Elite Fitness is an application developed using the Ionics framework within a period of a week.
