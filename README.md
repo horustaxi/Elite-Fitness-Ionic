@@ -20,3 +20,5 @@ THIS MAY ALSO HAPPEN FROM THE GRAPH BEING ALTERED WHILE THE VIEW IS NOT DISPLAYE
 
 <h3>Android Market Download</h3>
 https://play.google.com/store/apps/details?id=com.coderhell.elite_fitness
+<h3>Releases</h3>
+https://github.com/Coderhell/Elite-Fitness/releases
